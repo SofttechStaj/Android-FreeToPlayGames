@@ -2,7 +2,6 @@ package com.example.free_games.HomeRecyclerView
 
 import android.content.Context
 import android.content.Intent
-import android.text.TextUtils.split
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,10 +21,10 @@ import kotlin.collections.ArrayList
 class RecyclerAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
     var items = mutableListOf<GameModel>()
-    var itemsHistory = mutableListOf<GameModel>()
     var initialitems = mutableListOf<GameModel>()
     private lateinit var context: Context
     private var Search: Boolean? = null
+    //private var viewmodel: RecyclerActivityViewModel =
 
     companion object{
         const val VIEW_TYPE_ONE = 1
@@ -82,9 +81,45 @@ class RecyclerAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>()
 
     fun submitList(activity: Context?, list: List<GameModel>)
     {
-        items = list as MutableList<GameModel>
+        items.clear()
+        initialitems.clear()
+
+        items.addAll(list as MutableList<GameModel>)
         initialitems.apply { items?.let { addAll(it) } }
+
+        Log.e("submitList", items.toString())
         this.context = activity!!
+        notifyDataSetChanged()
+    }
+
+    fun submitsortedlist(list: List<GameModel>)
+    {
+        items.clear()
+        initialitems.clear()
+        items = list as MutableList<GameModel>
+        Log.e("submitsortedlist",items.toString())
+        initialitems.apply { items?.let { addAll(it) } }
+        notifyDataSetChanged()
+    }
+
+//    fun sortList()
+//    {
+//        items.sortBy { it.release_date }
+//        Log.e("sortList", items.toString())
+//        submitList(context, items)
+//    }
+
+    fun shuffleList()
+    {
+        updatedata(items.shuffled())
+        Log.e("shuffleList", items.toString())
+        //this.notifyDataSetChanged()
+    }
+
+    fun updatedata(sortBy: Collection<GameModel>) {
+        items.clear()
+        items.addAll(sortBy)
+        this.notifyDataSetChanged()
     }
 
     fun Search(): Filter {
@@ -135,7 +170,7 @@ class RecyclerAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>()
             val filteredList: ArrayList<GameModel> = ArrayList()
             Log.e("constraint", constraint.toString())
 
-            if(constraint == "All" || constraint == null || constraint.isEmpty())
+            if(constraint == ",All" || constraint == ",All,Newest" || constraint == null || constraint.isEmpty())
             {
                 initialitems.let { filteredList.addAll(it) }
             }

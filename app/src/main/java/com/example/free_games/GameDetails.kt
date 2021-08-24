@@ -72,10 +72,6 @@ class GameDetails : AppCompatActivity()
 
     protected fun isAppInstalled(packageName: String?): Boolean {
         val mIntent = packageManager.getLaunchIntentForPackage(packageName!!)
-        return if (mIntent != null) {
-            true
-        } else {
-            false
-        }
+        return mIntent != null
     }
 }

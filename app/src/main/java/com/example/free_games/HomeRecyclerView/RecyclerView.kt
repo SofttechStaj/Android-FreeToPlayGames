@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.SearchView
 import android.widget.Toast
@@ -28,6 +27,7 @@ class RecyclerView : Fragment() {
     private lateinit var FilterButton: ImageButton
     private var checkboxList = ",All"
     private var filtered = false
+    private lateinit var data:  List<GameModel>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -48,6 +48,7 @@ class RecyclerView : Fragment() {
             {
                 if (filtered == true)
                 {
+                    //if ("")
                     checkboxList = ",All"
                     filtered = false
                 }
@@ -80,8 +81,10 @@ class RecyclerView : Fragment() {
         viewModel.getRecyclerListDataObserver().observe(viewLifecycleOwner, {
             if (it != null)
             {
+                data = it
                 GamesAdapter.submitList(context,it)
                 GamesAdapter.notifyDataSetChanged()
+
             }
             else
             {
@@ -99,10 +102,23 @@ class RecyclerView : Fragment() {
             {
                 val result = data!!.getStringExtra("result")
                 checkboxList = result!!
+                if("Newest" in result)
+                {
+                    viewModel.sortData(true)
+                    //recycler_View.adapter = GamesAdapter
+                    Log.e("activity return", "sortdata")
+                    GamesAdapter.notifyDataSetChanged()
+
+                }
+                else
+                {
+                    viewModel.sortData(false)
+                    Log.e("activity return", "shuffle data")
+                    GamesAdapter.notifyDataSetChanged()
+                }
                 Log.e("checkboxHandler", result.toString())
                 filtered = true
                 GamesAdapter?.Filter()?.filter(result.toString())
-
             }
             if (resultCode == Activity.RESULT_CANCELED)
             {

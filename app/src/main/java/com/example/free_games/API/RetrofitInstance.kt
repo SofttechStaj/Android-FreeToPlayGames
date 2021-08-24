@@ -15,25 +15,4 @@ object RetrofitInstance {
     val api: RetrofitInterface by lazy {
         retrofit.create(RetrofitInterface::class.java)
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-//private val retrofit by lazy {
-//    Retrofit.Builder()
-//        .baseUrl(BASE_URL)
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .build()
-//}
-//
-//val api: SimpleApi by lazy {
-//    retrofit.create(SimpleApi::class.java)
-//}
