@@ -53,6 +53,8 @@
             android:layout_height="80dp"
             android:text="A free to play 3D online virtual world with a huge reputation! eneinein "
             android:textSize="18dp"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:gravity="center"
             android:background="#003B70"
             android:textColor="@color/white"
