@@ -10,6 +10,7 @@ import com.example.free_games.databinding.FilterActivityBinding
 
 class FilterActivity : AppCompatActivity() {
     lateinit var binding: FilterActivityBinding
+    var counter = 1
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -45,20 +46,49 @@ class FilterActivity : AppCompatActivity() {
             {
                 checkboxList.forEach {
                     it.isChecked = false
+                    counter = 1
+                }
+            }
+            else
+            {
+                if (counter == 1)
+                {
+                    binding.All.isChecked = true
                 }
             }
         }
 
-        checkboxList.forEach{
-            it.setOnClickListener{
-                binding.All.isChecked = false
+        checkboxList.forEach{ checkbox ->
+            checkbox.setOnClickListener{
+
+                if (checkbox.isChecked)
+                {
+                    if(binding.All.isChecked)
+                    {
+                        binding.All.isChecked = false
+                        //counter = 1
+                    }
+                    else
+                    {
+                        counter++
+                    }
+                }
+                else
+                {
+                    counter--
+                    if (counter == 0)
+                    {
+                        binding.All.isChecked = true
+                        counter++
+                    }
+                }
             }
         }
-
     }
 
     fun initializeCheckboxes(checkedList: List<String>)
     {
+        Log.e("initializeCheckboxes", checkedList.toString())
         if ("All" !in checkedList) { binding.All.isChecked = false }
         if ("ARPG" in checkedList) { binding.ActionRPG.isChecked = true }
         if ("Battle Royale" in checkedList) { binding.BattleRoyale.isChecked = true }
@@ -74,12 +104,14 @@ class FilterActivity : AppCompatActivity() {
         if ("Strategy" in checkedList) { binding.Strategy.isChecked = true }
         if ("Social" in checkedList) { binding.Social.isChecked = true }
         if ("Sports" in checkedList) { binding.Sports.isChecked = true }
+        if ("Newest" in checkedList) { binding.Newest.isChecked = true }
     }
 
     private fun checkboxHandler()
     {
         var list=""
-        if(binding.All.isChecked) { list = "All" }
+        if(binding.All.isChecked) { list = ",All"
+            if (binding.Newest.isChecked) { list = "$list,Newest"}}
         else
         {
             if (binding.ActionRPG.isChecked) { list = "$list,Action RPG,ARPG" }
@@ -96,7 +128,9 @@ class FilterActivity : AppCompatActivity() {
             if (binding.Strategy.isChecked) { list = "$list,Strategy" }
             if (binding.Social.isChecked) { list = "$list,Social" }
             if (binding.Sports.isChecked) { list = "$list,Sports" }
+            if (binding.Newest.isChecked) { list = "$list,Newest"}
         }
+
         Log.e("list from filter act", list)
         val returnIntent = Intent()
         returnIntent.putExtra("result", list)
