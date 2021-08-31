@@ -3,25 +3,22 @@ package com.example.free_games.Forum
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.free_games.API.RetrofitInstance
 import com.example.free_games.models.ForumModel
-import com.example.free_games.models.GameModel
 import com.google.firebase.firestore.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ForumViewModel: ViewModel() {
     var RecyclerviewData: MutableLiveData<List<ForumModel>>
     private var Posts: ArrayList<ForumModel> = arrayListOf()
     private lateinit var DB: FirebaseFirestore
 
-    init { RecyclerviewData = MutableLiveData()
+    init {
+        RecyclerviewData = MutableLiveData()
     }
 
     fun getRecyclerListDataObserver(): MutableLiveData<List<ForumModel>>
     {
         EventChangeListener()
+        Log.e("Log", "forum fetching data")
         return RecyclerviewData
     }
 

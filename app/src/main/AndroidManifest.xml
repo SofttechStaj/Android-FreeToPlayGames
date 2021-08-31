@@ -11,10 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Free_games">
-        <activity android:name=".FilterActivity"></activity>
+        <activity android:name=".RSSFeed.RSSDeatails"></activity>
+        <activity android:name=".FilterActivity" />
         <activity android:name=".Forum.AddPostActivity" />
-        <activity android:name=".Forum.Forum" />
         <activity android:name=".GameDetails" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

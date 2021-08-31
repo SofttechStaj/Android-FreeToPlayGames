@@ -50,7 +50,6 @@ class GameDetails : AppCompatActivity()
 
 
         binding.GamePlayButton.setOnClickListener{
-            //val packageName = "com.google.android.youtube"
             if (isAppInstalled("com.google.android.youtube"))
             {
                 val intent = Intent(Intent.ACTION_SEARCH)

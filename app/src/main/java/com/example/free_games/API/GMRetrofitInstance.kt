@@ -4,7 +4,7 @@ import com.example.free_games.Utils.Constants.Companion.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitInstance {
+object GMRetrofitInstance {
     private val retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -12,7 +12,7 @@ object RetrofitInstance {
             .build()
     }
 
-    val api: RetrofitInterface by lazy {
-        retrofit.create(RetrofitInterface::class.java)
+    val API: RetrofitInterfaceGM by lazy {
+        retrofit.create(RetrofitInterfaceGM::class.java)
     }
 }

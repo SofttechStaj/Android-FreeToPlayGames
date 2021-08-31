@@ -18,13 +18,12 @@ import com.example.free_games.models.GameModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RecyclerAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>()
+class GamesAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
     var items = mutableListOf<GameModel>()
     var initialitems = mutableListOf<GameModel>()
     private lateinit var context: Context
     private var Search: Boolean? = null
-    //private var viewmodel: RecyclerActivityViewModel =
 
     companion object{
         const val VIEW_TYPE_ONE = 1
@@ -79,7 +78,7 @@ class RecyclerAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>()
         return items.size
     }
 
-    fun submitList(activity: Context?, list: List<GameModel>)
+    fun submitList(list: List<GameModel>)
     {
         items.clear()
         initialitems.clear()
@@ -87,39 +86,7 @@ class RecyclerAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>()
         items.addAll(list as MutableList<GameModel>)
         initialitems.apply { items?.let { addAll(it) } }
 
-        Log.e("submitList", items.toString())
-        this.context = activity!!
         notifyDataSetChanged()
-    }
-
-    fun submitsortedlist(list: List<GameModel>)
-    {
-        items.clear()
-        initialitems.clear()
-        items = list as MutableList<GameModel>
-        Log.e("submitsortedlist",items.toString())
-        initialitems.apply { items?.let { addAll(it) } }
-        notifyDataSetChanged()
-    }
-
-//    fun sortList()
-//    {
-//        items.sortBy { it.release_date }
-//        Log.e("sortList", items.toString())
-//        submitList(context, items)
-//    }
-
-    fun shuffleList()
-    {
-        updatedata(items.shuffled())
-        Log.e("shuffleList", items.toString())
-        //this.notifyDataSetChanged()
-    }
-
-    fun updatedata(sortBy: Collection<GameModel>) {
-        items.clear()
-        items.addAll(sortBy)
-        this.notifyDataSetChanged()
     }
 
     fun Search(): Filter {
@@ -134,12 +101,10 @@ class RecyclerAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>()
             {
                 initialitems.let { filteredList.addAll(it) }
             }
-            else
-            {
+            else {
                 val query = constraint.toString().trim().toLowerCase()
                 initialitems.forEach{
-                    if(it.title.toLowerCase(Locale.ROOT).contains(query))
-                    {
+                    if(it.title.toLowerCase(Locale.ROOT).contains(query)) {
                         filteredList.add(it)
                     }
                 }
@@ -147,7 +112,6 @@ class RecyclerAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>()
             val results = FilterResults()
             results.values = filteredList
             return results
-
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {

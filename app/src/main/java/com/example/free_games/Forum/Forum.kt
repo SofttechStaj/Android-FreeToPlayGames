@@ -1,36 +1,50 @@
 package com.example.free_games.Forum
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.free_games.HomeRecyclerView.TopSpacingItemDecoration
+import com.example.free_games.LoginActivity
 import com.example.free_games.databinding.ForumRecyclerviewBinding
 import com.example.free_games.models.ForumModel
-import com.google.firebase.firestore.*
-import kotlinx.android.synthetic.main.forum_recyclerview.*
+import com.google.firebase.auth.FirebaseAuth
 
 
-class Forum : AppCompatActivity()
+class Forum : Fragment()
 {
     private lateinit var Posts: ArrayList<ForumModel>
     private lateinit var forumAdapter: ForumAdapter
-    lateinit var binding: ForumRecyclerviewBinding
+    private var _binding: ForumRecyclerviewBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel: ForumViewModel
+    private lateinit var firebaseAuth: FirebaseAuth
 
-    override fun onCreate(savedInstanceState: Bundle?)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         super.onCreate(savedInstanceState)
-        binding = ForumRecyclerviewBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        _binding = ForumRecyclerviewBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
+        super.onViewCreated(view, savedInstanceState)
+
         initRecyclerView()
+
         Posts = arrayListOf()
 
+        firebaseAuth = FirebaseAuth.getInstance()
+
         viewModel = ViewModelProviders.of(this).get(ForumViewModel::class.java)
-        viewModel.getRecyclerListDataObserver().observe(this, {
+        viewModel.getRecyclerListDataObserver().observe(viewLifecycleOwner, {
             if (it != null)
             {
                 forumAdapter.setData(it)
@@ -38,13 +52,21 @@ class Forum : AppCompatActivity()
             }
             else
             {
-                Toast.makeText(this, "Please Check Your Internet Connection", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Please Check Your Internet Connection", Toast.LENGTH_LONG).show()
             }
         })
 
         binding.AddPostButton.setOnClickListener {
-            val intent = Intent(this@Forum, AddPostActivity::class.java)
-            startActivity(intent)
+            if(firebaseAuth.currentUser != null)
+            {
+                val intent = Intent(context, AddPostActivity::class.java)
+                startActivity(intent)
+            }
+            else
+            {
+                val intent = Intent(context, LoginActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

@@ -6,18 +6,13 @@
         android:title="Home"
         />
     <item
-        android:id="@+id/id_search"
+        android:id="@+id/id_feed"
         android:icon="@drawable/rss"
-        android:title="Search"
+        android:title="Feed"
         />
     <item
-        android:id="@+id/id_list"
+        android:id="@+id/id_discussion"
         android:icon="@drawable/discussion"
-        android:title="List"
-        />
-    <item
-        android:id="@+id/id_profile"
-        android:icon="@drawable/list"
-        android:title="Profile"
+        android:title="Discussions"
         />
 </menu>

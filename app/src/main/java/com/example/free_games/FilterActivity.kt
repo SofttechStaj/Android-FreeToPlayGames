@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.free_games.HomeRecyclerView.RecyclerAdapter
 import com.example.free_games.databinding.FilterActivityBinding
 
 
@@ -18,7 +17,7 @@ class FilterActivity : AppCompatActivity() {
         binding = FilterActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var checkboxList = listOf(
+        val checkboxList = listOf(
             binding.ActionRPG,
             binding.BattleRoyale,
             binding.CardGame,
@@ -35,7 +34,7 @@ class FilterActivity : AppCompatActivity() {
             binding.Sports)
 
         val homeActivityData = intent.getStringExtra("Checkboxes")
-        var checkedList = homeActivityData!!.subSequence(1, homeActivityData.length).split(",")
+        val checkedList = homeActivityData!!.subSequence(1, homeActivityData.length).split(",")
         initializeCheckboxes(checkedList)
         binding.FilterButton.setOnClickListener{
             checkboxHandler()
@@ -66,7 +65,6 @@ class FilterActivity : AppCompatActivity() {
                     if(binding.All.isChecked)
                     {
                         binding.All.isChecked = false
-                        //counter = 1
                     }
                     else
                     {

@@ -15,19 +15,17 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.free_games.FilterActivity
 import com.example.free_games.R
-import com.example.free_games.models.GameModel
 import kotlinx.android.synthetic.main.recycler_view_fragment.*
 
 
-class RecyclerView : Fragment() {
+class Games : Fragment() {
 
-    private lateinit var GamesAdapter: RecyclerAdapter
-    private lateinit var viewModel: RecyclerActivityViewModel
+    private lateinit var GamesAdapter: GamesAdapter
+    private lateinit var viewModel: GamesViewModel
     private lateinit var searchBar: SearchView
     private lateinit var FilterButton: ImageButton
     private var checkboxList = ",All"
     private var filtered = false
-    private lateinit var data:  List<GameModel>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -44,28 +42,23 @@ class RecyclerView : Fragment() {
                 return true
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean
-            {
-                if (filtered == true)
-                {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (filtered == true) {
                     //if ("")
                     checkboxList = ",All"
                     filtered = false
                 }
 
-                if(newText.isNullOrEmpty())
-                {
+                if(newText.isNullOrEmpty()) {
                     GamesAdapter.setView(false)
                 }
-                else
-                {
+                else {
                     GamesAdapter.setView(true)
                 }
 
                 GamesAdapter?.Search()?.filter(newText)
                 return true
             }
-
         })
 
         FilterButton = view.findViewById(R.id.FilterButton)
@@ -77,12 +70,12 @@ class RecyclerView : Fragment() {
 
         initRecyclerView()
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(RecyclerActivityViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
         viewModel.getRecyclerListDataObserver().observe(viewLifecycleOwner, {
             if (it != null)
             {
-                data = it
-                GamesAdapter.submitList(context,it)
+                recycler_View.apply {recycler_View.adapter = GamesAdapter}
+                GamesAdapter.submitList(it)
                 GamesAdapter.notifyDataSetChanged()
 
             }
@@ -131,7 +124,7 @@ class RecyclerView : Fragment() {
     {
         recycler_View.apply {
             layoutManager = LinearLayoutManager(activity)
-            GamesAdapter = RecyclerAdapter()
+            GamesAdapter = GamesAdapter()
             recycler_View.adapter = GamesAdapter
             val topSpacingItemDecoration = TopSpacingItemDecoration(30)
             addItemDecoration(topSpacingItemDecoration)
